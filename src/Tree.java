@@ -43,8 +43,25 @@ public class Tree<E extends Comparable<? super E>> {
      * Return a string containing the tree contents as a tree with one node per line
      */
     public String toString() {
-        // TODO:
+        printTree(root, 0);
         return "";
+    }
+
+    private void printTree(BinaryTreeNode t, int depth) {
+        if (t == null) {
+            return;
+        }
+        printTree(t.right, depth + 2);
+        for (int i = 0; i < depth; i++){
+            System.out.print(" ");
+        }
+        if (t.parent == null){
+            System.out.println(t.key + " [no parent]");
+        }
+        else{
+            System.out.println(t.key + " [" + t.parent.key + "]");
+        }
+        printTree(t.left, depth+ 2);
     }
 
     /**
