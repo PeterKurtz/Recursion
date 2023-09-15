@@ -43,33 +43,58 @@ public class Tree<E extends Comparable<? super E>> {
      * Return a string containing the tree contents as a tree with one node per line
      */
     public String toString() {
-        printTree(root, 0);
-        return "";
+
+        String treeString = name + "\n";
+
+        treeString = treeAsString(root, 0, treeString);
+        return treeString;
     }
 
-    private void printTree(BinaryTreeNode t, int depth) {
+    private String treeAsString(BinaryTreeNode t, int depth, String treeString) {
         if (t == null) {
-            return;
+            return treeString;
         }
-        printTree(t.right, depth + 2);
+
+        treeString = treeAsString(t.right, depth + 2, treeString);
         for (int i = 0; i < depth; i++){
-            System.out.print(" ");
+            treeString = treeString + " ";
         }
         if (t.parent == null){
-            System.out.println(t.key + " [no parent]");
+            treeString = treeString + t.key + " [no parent]\n";
         }
         else{
-            System.out.println(t.key + " [" + t.parent.key + "]");
+            treeString = treeString + t.key + " [" + t.parent.key + "]\n";
         }
-        printTree(t.left, depth+ 2);
+        treeString = treeAsString(t.left, depth+ 2, treeString);
+        return treeString;
     }
 
     /**
      * Return a string containing the tree contents as a single line
      */
     public String inOrderToString() {
-        // TODO:
-        return "";
+
+        ArrayList<E> nodesInOrder = new ArrayList<>();
+        nodesInOrder = arrayInOrder(root, nodesInOrder);
+
+        String stringOfNodesInOrder = name + ":";
+        for (E node : nodesInOrder)
+            stringOfNodesInOrder = stringOfNodesInOrder + " " + node;
+
+        return stringOfNodesInOrder;
+    }
+
+    private ArrayList<E> arrayInOrder(BinaryTreeNode t, ArrayList<E> nodesInOrder) {
+
+        if (t == null) {
+            return nodesInOrder;
+        }
+
+        arrayInOrder(t.left, nodesInOrder);
+        nodesInOrder.add(t.key);
+        arrayInOrder(t.right, nodesInOrder);
+
+        return nodesInOrder;
     }
 
     /**
