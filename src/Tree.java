@@ -105,15 +105,25 @@ public class Tree<E extends Comparable<? super E>> {
     }
 
     private void flipTree(BinaryTreeNode t) {
+        if (t.left == null && t.right == null) {
+            return;
+        }
+        if (t.left == null) {
+            t.left = t.right;
+            t.right = null;
+            flipTree(t.left);
+        }
+        if (t.right == null) {
+            t.right = t.left;
+            t.left = null;
+            flipTree(t.right);
+        }
         BinaryTreeNode leftNode = new BinaryTreeNode(t.left.key, t.left.left, t.left.right, null);
         t.left = t.right;
         t.right = leftNode;
-        if (t.left != null) {
-            flipTree(t.left.left);
-        }
-        if (t.right != null) {
-            flipTree(t.right.right);
-        }
+        System.out.println(treeAsString(root, 0, ""));
+        flipTree(t.left);
+        flipTree(t.right);
     }
 
     /**
