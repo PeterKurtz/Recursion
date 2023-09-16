@@ -176,7 +176,7 @@ public class Tree<E extends Comparable<? super E>> {
 
             insert(orderedNodes.get(middleIndex));
             ArrayList<E> firstHalf = new ArrayList<E>(orderedNodes.subList(0, middleIndex));
-            ArrayList<E> secondHalf = new ArrayList<E>(orderedNodes.subList(middleIndex, orderedNodes.size() - 1));
+            ArrayList<E> secondHalf = new ArrayList<E>(orderedNodes.subList(middleIndex + 1, orderedNodes.size()));
             makeBalancedTree(firstHalf);
             makeBalancedTree(secondHalf);
         }
