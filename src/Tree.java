@@ -159,7 +159,28 @@ public class Tree<E extends Comparable<? super E>> {
      * Balance the tree
      */
     public void balanceTree() {
-        // TODO:
+        ArrayList<E> orderedNodes = new ArrayList<E>();
+        orderedNodes = arrayInOrder(root, orderedNodes);
+        root = null;
+
+        makeBalancedTree(orderedNodes);
+    }
+
+    private void makeBalancedTree(ArrayList<E> orderedNodes){
+        if (orderedNodes.size() == 1) {
+            insert(orderedNodes.get(0));
+        }
+
+        else{
+            int middleIndex = orderedNodes.size()/2;
+
+            insert(orderedNodes.get(middleIndex));
+            ArrayList<E> firstHalf = new ArrayList<E>(orderedNodes.subList(0, middleIndex));
+            ArrayList<E> secondHalf = new ArrayList<E>(orderedNodes.subList(middleIndex, orderedNodes.size() - 1));
+            makeBalancedTree(firstHalf);
+            makeBalancedTree(secondHalf);
+        }
+
     }
 
     /**
