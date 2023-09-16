@@ -101,7 +101,19 @@ public class Tree<E extends Comparable<? super E>> {
      * reverse left and right children recursively
      */
     public void flip() {
-        // TODO:
+        flipTree(root);
+    }
+
+    private void flipTree(BinaryTreeNode t) {
+        BinaryTreeNode leftNode = new BinaryTreeNode(t.left.key, t.left.left, t.left.right, null);
+        t.left = t.right;
+        t.right = leftNode;
+        if (t.left != null) {
+            flipTree(t.left.left);
+        }
+        if (t.right != null) {
+            flipTree(t.right.right);
+        }
     }
 
     /**
