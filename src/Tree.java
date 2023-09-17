@@ -160,15 +160,29 @@ public class Tree<E extends Comparable<? super E>> {
             return getNumOfNodes(depth + 1, level, t.right);
         }
         return getNumOfNodes(depth + 1, level, t.left) + getNumOfNodes(depth + 1, level, t.right);
-
-
     }
 
     /**
      * Print all paths from root to leaves
      */
     public void printAllPaths() {
-        // TODO:
+        recursivePrintPaths("25", root);
+    }
+
+    public void recursivePrintPaths(String path, BinaryTreeNode tree){
+        if (tree.left == null && tree.right == null) {
+            System.out.println(path);
+        }
+        else if (tree.left == null) {
+            recursivePrintPaths(path + " " + tree.right.key, tree.right);
+        }
+        else if (tree.right == null) {
+            recursivePrintPaths(path + " " + tree.left.key, tree.left);
+        }
+        else {
+            recursivePrintPaths(path + " " + tree.left.key, tree.left);
+            recursivePrintPaths(path + " " + tree.right.key, tree.right);
+        }
     }
 
     /**
