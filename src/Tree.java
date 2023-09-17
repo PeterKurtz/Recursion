@@ -118,12 +118,13 @@ public class Tree<E extends Comparable<? super E>> {
             t.left = null;
             flipTree(t.right);
         }
-        BinaryTreeNode leftNode = new BinaryTreeNode(t.left.key, t.left.left, t.left.right, null);
-        t.left = t.right;
-        t.right = leftNode;
-        System.out.println(treeAsString(root, 0, ""));
-        flipTree(t.left);
-        flipTree(t.right);
+        else {
+            BinaryTreeNode leftNode = new BinaryTreeNode(t.left.key, t.left.left, t.left.right, t.left.parent);
+            t.left = t.right;
+            t.right = leftNode;
+            flipTree(t.left);
+            flipTree(t.right);
+        }
     }
 
     /**
