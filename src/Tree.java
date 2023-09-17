@@ -143,8 +143,25 @@ public class Tree<E extends Comparable<? super E>> {
      * @return count of number of nodes at specified level
      */
     public int nodesInLevel(int level) {
-        // TODO:
-        return 0;
+        return getNumOfNodes(0, level, root);
+    }
+
+    private int getNumOfNodes(int depth, int level, BinaryTreeNode t) {
+        if (depth == level) {
+            return 1;
+        }
+        if (t.right == null && t.left == null) {
+            return 0;
+        }
+        if (t.right == null) {
+            return getNumOfNodes(depth + 1, level, t.left);
+        }
+        if (t.left == null) {
+            return getNumOfNodes(depth + 1, level, t.right);
+        }
+        return getNumOfNodes(depth + 1, level, t.left) + getNumOfNodes(depth + 1, level, t.right);
+
+
     }
 
     /**
