@@ -205,8 +205,19 @@ public class Tree<E extends Comparable<? super E>> {
     }
 
     public BinaryTreeNode getByKey(E key) {
-        // TODO:
-        return null;
+        return getByKeyRecursion(key, root);
+    }
+
+    public BinaryTreeNode getByKeyRecursion(E key, BinaryTreeNode tree) {
+        if (key.compareTo(tree.key) < 0) {
+             return getByKeyRecursion(key, tree.left);
+        }
+        if (key.compareTo(tree.key) > 0) {
+            return getByKeyRecursion(key, tree.right);
+        }
+        else {
+            return tree;
+        }
     }
 
     /**
