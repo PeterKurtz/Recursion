@@ -113,7 +113,7 @@ public class Tree<E extends Comparable<? super E>> {
             t.right = null;
             flipTree(t.left);
         }
-        if (t.right == null) {
+        else if (t.right == null) {
             t.right = t.left;
             t.left = null;
             flipTree(t.right);
@@ -132,8 +132,35 @@ public class Tree<E extends Comparable<? super E>> {
      * @param node node from which to find the in-order successor
      */
     public BinaryTreeNode inOrderSuccessor(BinaryTreeNode node) {
-        // TODO:
-        return null;
+        BinaryTreeNode singleNode = new BinaryTreeNode(null);
+        E value = node.key;
+        if (node.right == null) {
+            singleNode = rightNotExists(value, node.parent);
+        }
+        else {
+            singleNode = rightExists(node.right);
+        }
+
+        return singleNode;
+    }
+
+    private BinaryTreeNode rightExists(BinaryTreeNode tree) {
+        if (tree.left != null) {
+            return rightExists(tree.left);
+        }
+        return tree;
+    }
+
+    private BinaryTreeNode rightNotExists(E value, BinaryTreeNode tree) {
+        if (tree.key.compareTo(value) < 0) {
+            return rightNotExists(value, tree.parent);
+        }
+        if (tree.key.compareTo(value) > 0) {
+            return tree;
+        }
+        else {
+            return null;
+        }
     }
 
     /**
@@ -166,7 +193,7 @@ public class Tree<E extends Comparable<? super E>> {
      * Print all paths from root to leaves
      */
     public void printAllPaths() {
-        recursivePrintPaths("25", root);
+        recursivePrintPaths(""+root.key, root);
     }
 
     public void recursivePrintPaths(String path, BinaryTreeNode tree){
