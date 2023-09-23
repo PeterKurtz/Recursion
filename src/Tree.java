@@ -4,21 +4,10 @@ public class Tree<E extends Comparable<? super E>> {
     private BinaryTreeNode root;  // Root of tree
     private String name;     // Name of tree
 
-    /**
-     * Create an empty tree
-     *
-     * @param label Name of tree
-     */
     public Tree(String label) {
         name = label;
     }
 
-    /**
-     * Create BST from ArrayList
-     *
-     * @param arr   List of elements to be added
-     * @param label Name of tree
-     */
     public Tree(ArrayList<E> arr, String label) {
         name = label;
         for (E key : arr) {
@@ -26,12 +15,6 @@ public class Tree<E extends Comparable<? super E>> {
         }
     }
 
-    /**
-     * Create BST from Array
-     *
-     * @param arr   List of elements to be added
-     * @param label Name of  tree
-     */
     public Tree(E[] arr, String label) {
         name = label;
         for (E key : arr) {
@@ -50,6 +33,9 @@ public class Tree<E extends Comparable<? super E>> {
         return treeString;
     }
 
+    /**
+    * Helper recursion method for toString().
+    * */
     private String treeAsString(BinaryTreeNode t, int depth, String treeString) {
         if (t == null) {
             return treeString;
@@ -84,6 +70,9 @@ public class Tree<E extends Comparable<? super E>> {
         return stringOfNodesInOrder;
     }
 
+    /**
+     * Helper recursion method for inOrderToString().
+     * */
     private ArrayList<E> arrayInOrder(BinaryTreeNode t, ArrayList<E> nodesInOrder) {
 
         if (t == null) {
@@ -104,6 +93,9 @@ public class Tree<E extends Comparable<? super E>> {
         flipTree(root);
     }
 
+    /**
+     * Helper recursive method for flip().
+     * */
     private void flipTree(BinaryTreeNode t) {
         if (t.left == null && t.right == null) {
             return;
@@ -129,7 +121,6 @@ public class Tree<E extends Comparable<? super E>> {
 
     /**
      * Returns the in-order successor of the specified node
-     * @param node node from which to find the in-order successor
      */
     public BinaryTreeNode inOrderSuccessor(BinaryTreeNode node) {
         BinaryTreeNode singleNode = new BinaryTreeNode(null);
@@ -144,6 +135,9 @@ public class Tree<E extends Comparable<? super E>> {
         return singleNode;
     }
 
+    /**
+     * Helper recursive method for inOrderSuccessor.
+     * */
     private BinaryTreeNode rightExists(BinaryTreeNode tree) {
         if (tree.left != null) {
             return rightExists(tree.left);
@@ -151,6 +145,9 @@ public class Tree<E extends Comparable<? super E>> {
         return tree;
     }
 
+    /**
+     * Helper recursive method for inOrderSuccessor.
+     * */
     private BinaryTreeNode rightNotExists(E value, BinaryTreeNode tree) {
         if (tree.key.compareTo(value) < 0) {
             return rightNotExists(value, tree.parent);
@@ -165,14 +162,14 @@ public class Tree<E extends Comparable<? super E>> {
 
     /**
      * Counts number of nodes in specified level
-     *
-     * @param level Level in tree, root is zero
-     * @return count of number of nodes at specified level
      */
     public int nodesInLevel(int level) {
         return getNumOfNodes(0, level, root);
     }
 
+    /**
+     * Helper recursive method for nodesInLevel().
+     * */
     private int getNumOfNodes(int depth, int level, BinaryTreeNode t) {
         if (depth == level) {
             return 1;
@@ -196,6 +193,9 @@ public class Tree<E extends Comparable<? super E>> {
         recursivePrintPaths(""+root.key, root);
     }
 
+    /**
+     * Helper recursive method for printAllPaths().
+     * */
     public void recursivePrintPaths(String path, BinaryTreeNode tree){
         if (tree.left == null && tree.right == null) {
             System.out.println(path);
@@ -214,18 +214,59 @@ public class Tree<E extends Comparable<? super E>> {
 
     /**
      * Counts all non-null binary search trees embedded in tree
-     *
-     * @return Count of embedded binary search trees
-     */
+     **/
     public int countBST() {
-        // TODO:
-        return 0;
+        ArrayList<E> bstTreeNodes = new ArrayList<>();
+
+        bstTreeNodes = arrayOfTrees(bstTreeNodes, root);
+        int numOfBstTrees = bstTreeNodes.size();
+
+        return numOfBstTrees;
+    }
+
+    /**
+     * Helper recursive method for countBST().
+     * */
+    private ArrayList arrayOfTrees(ArrayList<E> bstTreeNodes, BinaryTreeNode tree) {
+        if (tree.left == null && tree.right == null) {
+            bstTreeNodes.add(tree.key);
+            return bstTreeNodes;
+        }
+
+        else if (tree.left == null) {
+            if (tree.right.key.compareTo(tree.key) > 0){
+                bstTreeNodes.add(tree.key);
+            }
+
+            bstTreeNodes = arrayOfTrees(bstTreeNodes, tree.right);
+            return bstTreeNodes;
+        }
+
+        else if (tree.right == null) {
+            if (tree.left.key.compareTo(tree.key) < 0){
+                bstTreeNodes.add(tree.key);
+            }
+
+            bstTreeNodes = arrayOfTrees(bstTreeNodes, tree.left);
+            return bstTreeNodes;
+        }
+
+        else {
+            bstTreeNodes = arrayOfTrees(bstTreeNodes, tree.left);
+            bstTreeNodes = arrayOfTrees(bstTreeNodes, tree.right);
+
+            if (bstTreeNodes.contains(tree.left.key) && bstTreeNodes.contains(tree.right.key)) {
+                if ((tree.left.key.compareTo(tree.right.key) < 0) && (tree.left.key.compareTo(tree.key) < 0) && (tree.right.key.compareTo(tree.key) > 0)) {
+                    bstTreeNodes.add(tree.key);
+                }
+            }
+
+            return bstTreeNodes;
+        }
     }
 
     /**
      * Insert into a bst tree; duplicates are allowed
-     *
-     * @param x the item to insert.
      */
     public void insert(E x) {
         root = insert(x, root, null);
@@ -235,6 +276,9 @@ public class Tree<E extends Comparable<? super E>> {
         return getByKeyRecursion(key, root);
     }
 
+    /**
+     * Returns the node which was specified.
+     * */
     public BinaryTreeNode getByKeyRecursion(E key, BinaryTreeNode tree) {
         if (key.compareTo(tree.key) < 0) {
              return getByKeyRecursion(key, tree.left);
@@ -258,6 +302,9 @@ public class Tree<E extends Comparable<? super E>> {
         makeBalancedTree(orderedNodes);
     }
 
+    /**
+     * Helper recursive method for balanceTree().
+     * */
     private void makeBalancedTree(ArrayList<E> orderedNodes){
         if (orderedNodes.size() == 1) {
             insert(orderedNodes.get(0));
@@ -278,10 +325,6 @@ public class Tree<E extends Comparable<? super E>> {
     /**
      * Internal method to insert into a subtree.
      * In tree is balanced, this routine runs in O(log n)
-     *
-     * @param x the item to insert.
-     * @param t the node that roots the subtree.
-     * @return the new root of the subtree.
      */
     private BinaryTreeNode insert(E x, BinaryTreeNode t, BinaryTreeNode parent) {
         if (t == null) return new BinaryTreeNode(x, null, null, parent);
@@ -301,11 +344,6 @@ public class Tree<E extends Comparable<? super E>> {
      * Internal method to find an item in a subtree.
      * This routine runs in O(log n) as there is only one recursive call that is executed and the work
      * associated with a single call is independent of the size of the tree: a=1, b=2, k=0
-     *
-     * @param x is item to search for.
-     * @param t the node that roots the subtree.
-     *          SIDE EFFECT: Sets local variable curr to be the node that is found
-     * @return node containing the matched item.
      */
     private boolean contains(E x, BinaryTreeNode t) {
         if (t == null)
